@@ -3,7 +3,10 @@ A mod for dataset-tools(OpenVPI) for support .ass file(Advanced SubStation Alpha
 
 ## 依赖
 `pip install wave`
+
 ~用来识别wave文件的采样率，这实际上是个防炒饭措施，在你正常处理音频文件的情况下是不需要check_wav的~
+
+一般现代的python版本都能正常运行
 
 ## 使用
 `python UI.py`
@@ -18,6 +21,10 @@ A mod for dataset-tools(OpenVPI) for support .ass file(Advanced SubStation Alpha
 
  - "AudioSlicer"通过算法判断音频静音部分进行分割，同时需要使用Adobe Audition™导入生成的"marks"进行调整，在实际使用过程中尤其是"静音阈值"和"最短长度"参数难以调节到理想效果。实际上对于各种语言的歌曲，互联网上广泛存在各种语言歌曲的包含时间戳的歌词文件，完全可以通过导入这些文件，在效率更高的编辑软件（如Aegisub）亦或是在AU中对其调整，甚至直接通过歌词从0构建切片时间戳，都是十分方便快捷的
  - "MinLabel"可以让你方便的输入与检查你的label标注，但美中不足的是音频的进度条不是很好用，对于一些你不熟悉的语言或者难以一遍过的语言，检查过程会非常折磨，对于音频的内容检查尤其是多语言对照检查，Aegisub都是经久不衰历经考验的，同时支持两种频谱的显示，你也可以非常方便的选区播放某一段音频
+
+## 我是如何使用的
+一般情况下我会直接编辑好.ASS格式的歌词，转化为.CSV格式的marks，导入AutoSlicer，之后导出.json使用MinLabel输出转换好的label，再回到Aegisub进行检查，最后输出.lab文件
+
 
 [1]: https://github.com/openvpi/DiffSinger
 [2]: https://github.com/openvpi/dataset-tools
