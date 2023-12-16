@@ -4,21 +4,20 @@ import os
 import argparse
 import wave
 
-
-
 def ass_to_csv(ass_file, csv_file, include_comments=True):
 
     with open(ass_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
-    events = [line for line in lines if line.startswith('Dialogue') or (include_comments and line.startswith('Comment'))]
+    event_lines = [line for line in lines if line.startswith('Dialogue') or (include_comments and line.startswith('Comment'))]
+    raw_lines =  [line for line in event_lines if ',raw,' in line]
 
     with open(csv_file, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, delimiter='\t')
         writer.writerow(['Name', 'Start', 'Duration', 'Time Format', 'Type', 'Description'])
 
-        for i, event in enumerate(events):
-            start_time, end_time = re.findall(r'\d:\d{2}:\d{2}.\d{2}', event)
+        for i, event_line in enumerate(raw_lines):
+            start_time, end_time = re.findall(r'\d:\d{2}:\d{2}.\d{2}', event_line)
             start_time = sum(float(x) * 60 ** (2 - i) for i, x in enumerate(start_time.split(':'))) * sample_rate
             end_time = sum(float(x) * 60 ** (2 - i) for i, x in enumerate(end_time.split(':'))) * sample_rate
             duration = end_time - start_time
@@ -32,6 +31,7 @@ def check_wav(wav_file):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--path', required=True, help='Path to the directory containing the ASS files')
+    parser.add_argument('--out_path', default=None, help='Path to the output directory')
     parser.add_argument('--skip_comments', action='store_false', help='Skip comments in the ASS files')
     parser.add_argument('--check_wav', action='store_true', help='Check the sample rate of the corresponding WAV files')
     args = parser.parse_args()
@@ -48,7 +48,9 @@ def main():
                 sample_rate = f.getframerate()
         print(f'Processing file {i} of {total_files} ({i / total_files * 100:.2f}%)')
         csv_file = ass_file.replace('.ass', '.csv')
-        ass_to_csv(os.path.join(args.path, ass_file), os.path.join(args.path, csv_file), args.skip_comments)
+        if args.out_path is None:
+            args.out_path = args.path
+        ass_to_csv(os.path.join(args.path, ass_file), os.path.join(args.out_path, csv_file), args.skip_comments)
 
 if __name__ == '__main__':
     main()
