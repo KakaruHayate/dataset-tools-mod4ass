@@ -28,6 +28,13 @@ def merge2ass():
     ass_path = filedialog.askdirectory(title='Save ASS directory')
     subprocess.run(['python', 'merge2ass.py', '--csv_path', csv_path, '--json_path', json_path, '--ass_path', ass_path])
 
+def ass2lab():
+    path = filedialog.askdirectory(title='Path to the directory containing the ASS files')
+    out_path = filedialog.askdirectory(title='Path to the output directory')
+    args = ['python', 'ass2lab.py', '--path', path, '--out_path', out_path]
+    if skip_comments.get():
+        args.append('--skip_comments')
+    subprocess.run(args)
 
 root = tk.Tk()
 root.title('dataset-tools mod4ass')
@@ -57,6 +64,15 @@ tab3 = tk.Frame(notebook)
 button3 = tk.Button(tab3, text='merge', command=merge2ass)
 button3.pack()
 notebook.add(tab3, text='merge2ass')
+
+tab4 = tk.Frame(notebook)
+button4 = tk.Button(tab4, text='trans', command=ass2lab)
+button4.pack()
+skip_comments = tk.IntVar(value=0)
+checkbutton4 = tk.Checkbutton(tab4, text='Skip comments', variable=skip_comments)
+checkbutton4.pack()
+notebook.add(tab4, text='ass2lab')
+
 
 notebook.pack()
 
