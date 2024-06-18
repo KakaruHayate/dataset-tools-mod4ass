@@ -15,8 +15,8 @@ def ds_to_marker(ds_file, csv_file):
         writer.writerow(['Name', 'Start', 'Duration', 'Time Format', 'Type', 'Description'])
 
         for i, segment in enumerate(data):
-            start_time = segment["offset"] * sample_rate
-            duration = sum(float(x) for x in segment["ph_dur"].split()) * sample_rate
+            start_time = int(segment["offset"] * sample_rate)
+            duration = int(sum(float(x) for x in segment["ph_dur"].split()) * sample_rate)
             writer.writerow([f'Marker {i}', start_time, duration, f'{sample_rate} Hz', 'Cue', ''])
 
 def main():
@@ -29,7 +29,7 @@ def main():
     total_files = len(ds_files)
     for i, ds_file in enumerate(ds_files, start=1):
         print(f'Processing file {i} of {total_files} ({i / total_files * 100:.2f}%)')
-        csv_file = ds_files.replace('.ds', '.csv')
+        csv_file = ds_file.replace('.ds', '.csv')
         if args.out_path is None:
             args.out_path = args.path
         ds_to_marker(os.path.join(args.path, ds_file), os.path.join(args.out_path, csv_file))
