@@ -1,6 +1,11 @@
 # dataset-tools-mod4ass
 A mod for dataset-tools(OpenVPI) for support .ass file(Advanced SubStation Alpha). 
 
+## 2024/6/18
+上传了`fix_ap.py`用于将音频的头尾0.1秒静音
+
+配合`ds2mark`用于强化学习/模型蒸馏
+
 ## 依赖
 `pip install wave`
 
