@@ -2,7 +2,7 @@
 A mod for dataset-tools(OpenVPI) for support .ass file(Advanced SubStation Alpha). 
 
 ## 2024/6/18
-上传了`fix_ap.py`用于将音频的头尾0.1秒静音
+上传了`fix_ap.py`用于将音频的头尾0.1秒静音，需要`librosa`
 
 配合`ds2mark`用于强化学习/模型蒸馏
 
